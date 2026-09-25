@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - Smart Turf Management</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-light">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">
+        <i class="bi bi-shield-lock-fill text-danger me-2"></i>
+        <span>Smart</span>Turf <span class="badge bg-danger ms-1" style="font-size: 0.65rem;">ADMIN PORTAL</span>
+      </a>
+      <div class="ms-auto">
+        <a href="../login.html" class="nav-link text-white"><i class="bi bi-person me-1"></i>Customer Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        <div class="card border-0 shadow-sm p-4 rounded-4 bg-white">
+          <div class="text-center mb-4">
+            <div class="stat-icon revenue mx-auto mb-2" style="background-color: #fee2e2; color: #dc2626;">
+              <i class="bi bi-shield-lock fs-2"></i>
+            </div>
+            <h3 class="fw-bold text-dark">Admin Authentication</h3>
+            <p class="text-muted small">Sign in to access administrative operations & analytics</p>
+          </div>
+
+          <!-- Alert for errors -->
+          <div id="admin-login-alert" class="alert alert-danger d-none py-2 small" role="alert"></div>
+
+          <form id="admin-login-form">
+            <div class="mb-3">
+              <label for="admin-email" class="form-label fw-semibold small">Administrator Email</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light"><i class="bi bi-envelope text-muted"></i></span>
+                <input type="email" id="admin-email" class="form-control" placeholder="admin@smartturf.com" required>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="admin-password" class="form-label fw-semibold small">Password</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light"><i class="bi bi-lock text-muted"></i></span>
+                <input type="password" id="admin-password" class="form-control" placeholder="Enter administrator password" required>
+              </div>
+            </div>
+
+            <button type="submit" id="admin-login-btn" class="btn btn-danger w-100 py-2 fw-semibold mt-2">
+              <i class="bi bi-box-arrow-in-right me-1"></i>Access Admin Dashboard
+            </button>
+          </form>
+
+          <!-- Quick Demo Login -->
+          <div class="mt-4 pt-3 border-top text-center">
+            <p class="text-muted small mb-2 fw-semibold">Quick Demo Admin (Click to Autofill):</p>
+            <button type="button" class="btn btn-outline-danger btn-sm" onclick="autofillAdmin('admin@smartturf.com', 'admin123')">
+              <i class="bi bi-key-fill me-1"></i>Fill Admin Credentials
+            </button>
+          </div>
+
+          <div class="text-center mt-4 text-muted small">
+            Need an admin account? <a href="../register.html?role=ADMIN" class="text-danger fw-semibold">Register here</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/config.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    function autofillAdmin(email, password) {
+      document.getElementById("admin-email").value = email;
+      document.getElementById("admin-password").value = password;
+    }
+
+    document.getElementById("admin-login-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("admin-email").value.trim();
+      const password = document.getElementById("admin-password").value;
+      const alertEl = document.getElementById("admin-login-alert");
+      const btn = document.getElementById("admin-login-btn");
+
+      alertEl.classList.add("d-none");
+      btn.disabled = true;
+      btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Verifying...`;
+
+      try {
+        const res = await fetch(`${API_BASE_URL}/admin/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          setCurrentUser(data.data);
+          window.location.href = "dashboard.html";
+        } else {
+          alertEl.textContent = data.message || "Invalid administrator credentials.";
+          alertEl.classList.remove("d-none");
+          btn.disabled = false;
+          btn.innerHTML = `<i class="bi bi-box-arrow-in-right me-1"></i>Access Admin Dashboard`;
+        }
+      } catch (err) {
+        console.error(err);
+        alertEl.textContent = "Unable to connect to backend server. Make sure Spring Boot is running.";
+        alertEl.classList.remove("d-none");
+        btn.disabled = false;
+        btn.innerHTML = `<i class="bi bi-box-arrow-in-right me-1"></i>Access Admin Dashboard`;
+      }
+    });
+  </script>
+</body>
+</html>

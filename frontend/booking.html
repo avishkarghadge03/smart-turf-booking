@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirm Booking - Smart Turf Booking System</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <i class="bi bi-trophy-fill text-success fs-4 me-2"></i>
+        <span>Smart</span>Turf
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNavbar">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="turfs.html">Explore Turfs</a></li>
+          <li class="nav-item"><a class="nav-link" href="bookings.html">My Bookings</a></li>
+        </ul>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center" id="auth-nav-items"></ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="py-5" id="booking-checkout-container">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-9">
+          <!-- Step indicator -->
+          <div class="d-flex justify-content-center mb-4">
+            <div class="d-flex align-items-center gap-2">
+              <span class="badge bg-success rounded-circle p-2">1</span> <span class="fw-semibold">Select Slot</span>
+              <i class="bi bi-chevron-right text-muted mx-2"></i>
+              <span class="badge bg-primary rounded-circle p-2">2</span> <span class="fw-bold text-primary">Confirm Details</span>
+              <i class="bi bi-chevron-right text-muted mx-2"></i>
+              <span class="badge bg-secondary rounded-circle p-2">3</span> <span class="text-muted">Payment</span>
+            </div>
+          </div>
+
+          <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+            <h4 class="fw-bold text-dark mb-4 border-bottom pb-2">
+              <i class="bi bi-card-checklist me-2 text-success"></i>Reservation Summary
+            </h4>
+
+            <div class="row g-4">
+              <!-- Left Column: Turf & Slot Details -->
+              <div class="col-md-7">
+                <div class="d-flex gap-3 mb-4">
+                  <img id="checkout-turf-img" src="" style="width: 110px; height: 90px; object-fit: cover; border-radius: 10px;" alt="Turf">
+                  <div>
+                    <h5 class="fw-bold text-dark mb-1" id="checkout-turf-name">Loading turf...</h5>
+                    <p class="text-muted small mb-1"><i class="bi bi-geo-alt text-danger me-1"></i><span id="checkout-turf-location"></span></p>
+                    <span class="badge bg-light text-dark border" id="checkout-turf-sport">Football</span>
+                  </div>
+                </div>
+
+                <div class="p-3 bg-light rounded-3 mb-4">
+                  <h6 class="fw-bold text-dark mb-3"><i class="bi bi-clock me-1 text-primary"></i>Scheduled Time</h6>
+                  <div class="row">
+                    <div class="col-6">
+                      <small class="text-muted d-block">Booking Date</small>
+                      <strong class="text-dark" id="checkout-date">--</strong>
+                    </div>
+                    <div class="col-6">
+                      <small class="text-muted d-block">Slot Interval</small>
+                      <strong class="text-dark" id="checkout-time">--</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <h6 class="fw-bold text-dark mb-2"><i class="bi bi-person-circle me-1 text-secondary"></i>Customer Information</h6>
+                <div class="p-3 border rounded-3 bg-white mb-3">
+                  <div class="d-flex justify-content-between py-1">
+                    <span class="text-muted small">Name:</span>
+                    <strong class="small" id="checkout-user-name">Player</strong>
+                  </div>
+                  <div class="d-flex justify-content-between py-1">
+                    <span class="text-muted small">Email:</span>
+                    <span class="small" id="checkout-user-email">email@example.com</span>
+                  </div>
+                  <div class="d-flex justify-content-between py-1">
+                    <span class="text-muted small">Phone:</span>
+                    <span class="small" id="checkout-user-phone">--</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column: Pricing & Confirmation -->
+              <div class="col-md-5">
+                <div class="p-4 bg-light rounded-4 border">
+                  <h6 class="fw-bold text-dark mb-3">Payment Breakdown</h6>
+                  
+                  <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted small">Turf Rate (1 Hour):</span>
+                    <span class="text-dark fw-semibold" id="checkout-price">₹0</span>
+                  </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted small">Taxes & Platform Fee:</span>
+                    <span class="text-success fw-semibold">₹0 (Free)</span>
+                  </div>
+                  <hr>
+                  <div class="d-flex justify-content-between mb-4">
+                    <strong class="text-dark">Total Payable:</strong>
+                    <strong class="text-success fs-4" id="checkout-total">₹0</strong>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label small fw-bold text-dark mb-2">Payment Method:</label>
+                    <div class="p-2 border rounded-3 bg-white d-flex align-items-center mb-0">
+                      <span class="small fw-semibold"><i class="bi bi-qr-code text-primary me-1"></i>UPI (GPay / PhonePe / Paytm)</span>
+                    </div>
+                  </div>
+
+                  <div class="alert alert-success py-2 small mb-3">
+                    <i class="bi bi-patch-check-fill me-1"></i>Instant confirmation: your slot will be officially booked immediately via UPI.
+                  </div>
+
+                  <button id="confirm-booking-btn" class="btn btn-primary-turf w-100 py-2 fw-semibold">
+                    <i class="bi bi-check-circle-fill me-2"></i>Proceed to Payment
+                  </button>
+
+                  <a href="turfs.html" class="btn btn-outline-secondary w-100 btn-sm mt-2">
+                    Back to Arenas
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Booking Confirmed Modal -->
+  <div class="modal fade" id="bookingSuccessModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="modal-header bg-success text-white py-3 border-0">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-check-circle-fill fs-3 me-2"></i>
+            <div>
+              <h5 class="modal-title fw-bold mb-0">Booking Confirmed!</h5>
+              <small class="text-white-50">Your slot is officially booked and reserved</small>
+            </div>
+          </div>
+        </div>
+        <div class="modal-body p-4">
+          <div class="text-center mb-4">
+            <div class="stat-icon revenue mx-auto mb-2" style="width: 70px; height: 70px; font-size: 2.2rem; border-radius: 50%;">
+              <i class="bi bi-check-lg text-success"></i>
+            </div>
+            <h4 class="fw-bold text-success mb-1">PAYMENT SUCCESSFUL ✓</h4>
+            <h6 class="fw-bold text-dark mb-0">Booking Confirmed!</h6>
+          </div>
+
+          <div class="bg-light p-3 rounded-3 mb-4 border text-start">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-muted small">Booking ID:</span>
+              <strong class="text-dark" id="modal-booking-id">#--</strong>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-muted small">Turf:</span>
+              <strong class="text-dark text-end" id="modal-turf-name">--</strong>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-muted small">Date:</span>
+              <strong class="text-dark" id="modal-match-date">--</strong>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-muted small">Time:</span>
+              <strong class="text-dark" id="modal-slot-time">--</strong>
+            </div>
+            <hr class="my-2">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-muted small">Amount Paid:</span>
+              <strong class="text-success" id="modal-total-paid">₹0</strong>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-muted small">Payment Method:</span>
+              <strong class="text-dark">UPI</strong>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span class="text-muted small">Transaction ID:</span>
+              <strong class="text-primary font-monospace" id="modal-txn-id">UPI-XXXXXXXX</strong>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-center gap-3">
+            <a href="bookings.html" class="btn btn-primary-turf px-4">
+              <i class="bi bi-calendar-check me-1"></i>View My Bookings
+            </a>
+            <a href="index.html" class="btn btn-outline-secondary px-4">
+              <i class="bi bi-house me-1"></i>Back to Home
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/turf.js"></script>
+  <script src="js/booking.js"></script>
+</body>
+</html>

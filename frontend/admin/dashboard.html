@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Smart Turf Booking System</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-light" id="admin-dashboard-view">
+
+  <!-- Admin Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top px-3">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="dashboard.html">
+        <i class="bi bi-shield-lock-fill text-danger me-2"></i>
+        <span>Smart</span>Turf <span class="badge bg-danger ms-1" style="font-size: 0.65rem;">ADMIN</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="adminNavbar">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="dashboard.html"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="users.html"><i class="bi bi-people me-1"></i>Users</a></li>
+          <li class="nav-item"><a class="nav-link" href="turfs.html"><i class="bi bi-grid me-1"></i>Turfs</a></li>
+          <li class="nav-item"><a class="nav-link" href="slots.html"><i class="bi bi-clock me-1"></i>Slots</a></li>
+          <li class="nav-item"><a class="nav-link" href="bookings.html"><i class="bi bi-journal-check me-1"></i>Bookings</a></li>
+          <li class="nav-item"><a class="nav-link" href="payments.html"><i class="bi bi-cash-coin me-1"></i>Payments</a></li>
+          <li class="nav-item"><a class="nav-link" href="reviews.html"><i class="bi bi-star me-1"></i>Reviews</a></li>
+          <li class="nav-item"><a class="nav-link" href="complaints.html"><i class="bi bi-ticket-perforated me-1"></i>Complaints</a></li>
+        </ul>
+        <div class="d-flex align-items-center gap-3">
+          <a href="../index.html" class="btn btn-outline-light btn-sm" target="_blank">
+            <i class="bi bi-box-arrow-up-right me-1"></i>View Site
+          </a>
+          <button class="btn btn-danger btn-sm" onclick="logout()">
+            <i class="bi bi-box-arrow-right me-1"></i>Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="py-4">
+    <div class="container-fluid px-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h2 class="fw-bold text-dark mb-1">Administrative Overview</h2>
+          <p class="text-muted small mb-0">Platform analytics, revenue metrics, and booking records.</p>
+        </div>
+        <div class="d-flex gap-2">
+          <a href="turf-form.html" class="btn btn-primary-turf btn-sm">
+            <i class="bi bi-plus-lg me-1"></i>Add Turf
+          </a>
+          <a href="slots.html" class="btn btn-outline-dark btn-sm">
+            <i class="bi bi-calendar-plus me-1"></i>Generate Slots
+          </a>
+        </div>
+      </div>
+
+      <!-- Metrics Cards -->
+      <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-xl">
+          <div class="card stat-card">
+            <div class="stat-icon users"><i class="bi bi-people"></i></div>
+            <div>
+              <div class="text-muted small fw-semibold">Total Users</div>
+              <h4 class="fw-bold mb-0 text-dark" id="stat-users">0</h4>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-xl">
+          <div class="card stat-card">
+            <div class="stat-icon turfs"><i class="bi bi-trophy"></i></div>
+            <div>
+              <div class="text-muted small fw-semibold">Total Turfs</div>
+              <h4 class="fw-bold mb-0 text-dark" id="stat-turfs">0</h4>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-xl">
+          <div class="card stat-card">
+            <div class="stat-icon bookings"><i class="bi bi-journal-text"></i></div>
+            <div>
+              <div class="text-muted small fw-semibold">Total Bookings</div>
+              <h4 class="fw-bold mb-0 text-dark" id="stat-bookings">0</h4>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-xl">
+          <div class="card stat-card">
+            <div class="stat-icon revenue"><i class="bi bi-currency-rupee"></i></div>
+            <div>
+              <div class="text-muted small fw-semibold">Total Revenue</div>
+              <h4 class="fw-bold mb-0 text-success" id="stat-revenue">₹0</h4>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-xl">
+          <div class="card stat-card">
+            <div class="stat-icon complaints"><i class="bi bi-exclamation-octagon"></i></div>
+            <div>
+              <div class="text-muted small fw-semibold">Pending Issues</div>
+              <h4 class="fw-bold mb-0 text-danger" id="stat-complaints">0</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Bookings Table -->
+      <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="fw-bold text-dark mb-0"><i class="bi bi-clock-history me-2 text-primary"></i>Latest Reservations</h5>
+          <a href="bookings.html" class="btn btn-outline-secondary btn-sm">View All Bookings</a>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light small">
+              <tr>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Turf Arena</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="admin-recent-bookings-tbody">
+              <tr><td colspan="6" class="text-center py-3 text-muted">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/config.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

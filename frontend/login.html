@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Smart Turf Booking System</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <i class="bi bi-trophy-fill text-success fs-4 me-2"></i>
+        <span>Smart</span>Turf
+      </a>
+      <div class="ms-auto">
+        <a href="index.html" class="nav-link text-white"><i class="bi bi-arrow-left me-1"></i>Back to Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        <div class="card border-0 shadow-sm p-4 rounded-4 bg-white">
+          <div class="text-center mb-4">
+            <div class="stat-icon turfs mx-auto mb-2">
+              <i class="bi bi-box-arrow-in-right fs-2"></i>
+            </div>
+            <h3 class="fw-bold text-dark">Welcome Back</h3>
+            <p class="text-muted small">Sign in to book slots and manage reservations</p>
+          </div>
+
+          <!-- Alert for errors -->
+          <div id="login-alert" class="alert alert-danger d-none py-2 small" role="alert"></div>
+
+          <form id="login-form">
+            <div class="mb-3">
+              <label for="login-email" class="form-label fw-semibold small">Email Address</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light"><i class="bi bi-envelope text-muted"></i></span>
+                <input type="email" id="login-email" class="form-control" placeholder="name@example.com" required>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="d-flex justify-content-between">
+                <label for="login-password" class="form-label fw-semibold small">Password</label>
+              </div>
+              <div class="input-group">
+                <span class="input-group-text bg-light"><i class="bi bi-lock text-muted"></i></span>
+                <input type="password" id="login-password" class="form-control" placeholder="Enter your password" required>
+              </div>
+            </div>
+
+            <button type="submit" id="login-btn" class="btn btn-primary-turf w-100 py-2 fw-semibold mt-2">
+              <i class="bi bi-box-arrow-in-right me-1"></i>Sign In
+            </button>
+          </form>
+
+          <!-- Demo Autofill Section for Testing / Evaluation -->
+          <div class="mt-4 pt-3 border-top text-center">
+            <p class="text-muted small mb-2 fw-semibold">Quick Demo Login (Click to Autofill):</p>
+            <div class="d-flex gap-2 justify-content-center">
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick="autofillDemo('rahul@gmail.com', 'rahul123')">
+                <i class="bi bi-person me-1"></i>Customer Demo
+              </button>
+              <button type="button" class="btn btn-outline-danger btn-sm" onclick="autofillDemo('admin@smartturf.com', 'admin123')">
+                <i class="bi bi-shield-lock me-1"></i>Admin Demo
+              </button>
+            </div>
+          </div>
+
+          <div class="text-center mt-4 text-muted small">
+            Don't have an account? <a href="register.html" class="text-success fw-semibold">Register here</a>
+          </div>
+          <div class="text-center mt-2">
+            <a href="admin/login.html" class="text-danger small fw-semibold">
+              <i class="bi bi-shield-lock me-1"></i>Switch to Dedicated Admin Portal
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    function autofillDemo(email, password) {
+      document.getElementById("login-email").value = email;
+      document.getElementById("login-password").value = password;
+    }
+
+    document.getElementById("login-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("login-email").value.trim();
+      const password = document.getElementById("login-password").value;
+      const alertEl = document.getElementById("login-alert");
+      const btn = document.getElementById("login-btn");
+
+      alertEl.classList.add("d-none");
+      btn.disabled = true;
+      btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Signing in...`;
+
+      try {
+        const res = await fetch(`${API_BASE_URL}/users/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          setCurrentUser(data.data);
+          const params = new URLSearchParams(window.location.search);
+          const redirect = params.get("redirect");
+
+          if (redirect) {
+            window.location.href = redirect;
+          } else if (data.data.role === "ADMIN") {
+            window.location.href = "admin/dashboard.html";
+          } else {
+            window.location.href = "dashboard.html";
+          }
+        } else {
+          alertEl.textContent = data.message || "Invalid email or password.";
+          alertEl.classList.remove("d-none");
+          btn.disabled = false;
+          btn.innerHTML = `<i class="bi bi-box-arrow-in-right me-1"></i>Sign In`;
+        }
+      } catch (err) {
+        console.error(err);
+        alertEl.textContent = "Unable to connect to backend server. Make sure Spring Boot is running.";
+        alertEl.classList.remove("d-none");
+        btn.disabled = false;
+        btn.innerHTML = `<i class="bi bi-box-arrow-in-right me-1"></i>Sign In`;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Reviews - Smart Turf Booking System</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <i class="bi bi-trophy-fill text-success fs-4 me-2"></i>
+        <span>Smart</span>Turf
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNavbar">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="turfs.html">Explore Turfs</a></li>
+          <li class="nav-item"><a class="nav-link" href="bookings.html">My Bookings</a></li>
+          <li class="nav-item"><a class="nav-link" href="complaints.html">Complaints</a></li>
+          <li class="nav-item"><a class="nav-link active" href="reviews.html">Reviews</a></li>
+        </ul>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center" id="auth-nav-items"></ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="py-4">
+    <div class="container">
+      <div class="mb-4">
+        <h2 class="fw-bold text-dark mb-1">Turf Reviews & Ratings</h2>
+        <p class="text-muted small">Share your thoughts on match conditions, pitch quality, and lighting.</p>
+      </div>
+
+      <div class="row g-4">
+        <!-- Review Submission Form -->
+        <div class="col-lg-5">
+          <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+            <h5 class="fw-bold text-dark mb-3"><i class="bi bi-pencil-square me-2 text-success"></i>Write a Review</h5>
+
+            <form id="review-form">
+              <div class="mb-3">
+                <label for="review-turf-select" class="form-label fw-semibold small">Turf Arena</label>
+                <select id="review-turf-select" class="form-select" required>
+                  <option value="">Loading turfs...</option>
+                </select>
+              </div>
+
+              <!-- Interactive Star Rating -->
+              <div class="mb-3">
+                <label class="form-label fw-semibold small d-block">Overall Rating</label>
+                <div class="star-interactive star-picker d-flex gap-2 align-items-center py-1">
+                  <i class="bi bi-star-fill text-warning fs-3" data-rating="1"></i>
+                  <i class="bi bi-star-fill text-warning fs-3" data-rating="2"></i>
+                  <i class="bi bi-star-fill text-warning fs-3" data-rating="3"></i>
+                  <i class="bi bi-star-fill text-warning fs-3" data-rating="4"></i>
+                  <i class="bi bi-star-fill text-warning fs-3" data-rating="5"></i>
+                  <span id="rating-text-label" class="ms-2 fw-semibold text-muted small">5 - Excellent!</span>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="review-comment" class="form-label fw-semibold small">Your Feedback</label>
+                <textarea id="review-comment" class="form-control" rows="4" placeholder="How was the turf pitch, grass condition, ball bounce, and lighting?" required></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary-turf w-100 py-2 fw-semibold">
+                <i class="bi bi-send-check me-1"></i>Submit Review
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- My Reviews List -->
+        <div class="col-lg-7">
+          <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+            <h5 class="fw-bold text-dark mb-3"><i class="bi bi-chat-heart me-2 text-success"></i>My Submitted Reviews</h5>
+            <div id="my-reviews-container">
+              <!-- Loaded by review.js -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/review.js"></script>
+</body>
+</html>
