@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slot Management - Smart Turf Admin</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-light" id="admin-slots-view">
+
+  <!-- Admin Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top px-3">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="dashboard.html">
+        <i class="bi bi-shield-lock-fill text-danger me-2"></i>
+        <span>Smart</span>Turf <span class="badge bg-danger ms-1" style="font-size: 0.65rem;">ADMIN</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="adminNavbar">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="users.html"><i class="bi bi-people me-1"></i>Users</a></li>
+          <li class="nav-item"><a class="nav-link" href="turfs.html"><i class="bi bi-grid me-1"></i>Turfs</a></li>
+          <li class="nav-item"><a class="nav-link active" href="slots.html"><i class="bi bi-clock me-1"></i>Slots</a></li>
+          <li class="nav-item"><a class="nav-link" href="bookings.html"><i class="bi bi-journal-check me-1"></i>Bookings</a></li>
+          <li class="nav-item"><a class="nav-link" href="payments.html"><i class="bi bi-cash-coin me-1"></i>Payments</a></li>
+          <li class="nav-item"><a class="nav-link" href="reviews.html"><i class="bi bi-star me-1"></i>Reviews</a></li>
+          <li class="nav-item"><a class="nav-link" href="complaints.html"><i class="bi bi-ticket-perforated me-1"></i>Complaints</a></li>
+        </ul>
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-danger btn-sm" onclick="logout()"><i class="bi bi-box-arrow-right me-1"></i>Logout</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="py-4">
+    <div class="container-fluid px-4">
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+          <h2 class="fw-bold text-dark mb-1">Turf Slot Scheduling</h2>
+          <p class="text-muted small mb-0">Generate hourly intervals, monitor status, and control bookings.</p>
+        </div>
+        <div class="d-flex gap-2 mt-2 mt-md-0">
+          <button class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#batchSlotModal">
+            <i class="bi bi-magic me-1"></i>Batch Generate Slots
+          </button>
+          <button class="btn btn-primary-turf btn-sm" data-bs-toggle="modal" data-bs-target="#singleSlotModal">
+            <i class="bi bi-plus-circle me-1"></i>Add Single Slot
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="card p-3 border-0 shadow-sm rounded-4 bg-white mb-4">
+        <div class="row g-2 align-items-center">
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold">Filter by Turf Arena</label>
+            <select id="filter-turf-select" class="form-select">
+              <option value="">-- All Turfs --</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold">Filter by Match Date</label>
+            <input type="date" id="filter-slot-date" class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <!-- Slots Table -->
+      <div class="card border-0 shadow-sm rounded-4 bg-white overflow-hidden">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light small">
+              <tr>
+                <th>Slot ID</th>
+                <th>Turf Arena</th>
+                <th>Date</th>
+                <th>Time Interval</th>
+                <th>Status</th>
+                <th>Toggle Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="slots-tbody">
+              <tr><td colspan="7" class="text-center py-4 text-muted">Loading slots...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add Single Slot Modal -->
+  <div class="modal fade" id="singleSlotModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow rounded-4">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold">Create Single Slot</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="single-slot-form">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="slot-turf-select" class="form-label fw-semibold small">Turf Arena</label>
+              <select id="slot-turf-select" class="form-select" required></select>
+            </div>
+            <div class="mb-3">
+              <label for="slot-date" class="form-label fw-semibold small">Date</label>
+              <input type="date" id="slot-date" class="form-control" required>
+            </div>
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label for="slot-start-time" class="form-label fw-semibold small">Start Time</label>
+                <input type="time" id="slot-start-time" class="form-control" required>
+              </div>
+              <div class="col-6">
+                <label for="slot-end-time" class="form-label fw-semibold small">End Time</label>
+                <input type="time" id="slot-end-time" class="form-control" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="slot-status" class="form-label fw-semibold small">Initial Status</label>
+              <select id="slot-status" class="form-select">
+                <option value="AVAILABLE">AVAILABLE</option>
+                <option value="BOOKED">BOOKED</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary-turf btn-sm">Save Slot</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Batch Generate Slots Modal -->
+  <div class="modal fade" id="batchSlotModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow rounded-4">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold">Batch Generate Daily Slots</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="batch-slot-form">
+          <div class="modal-body">
+            <p class="small text-muted">Generates 1-hour consecutive booking slots across the operating window.</p>
+            <div class="mb-3">
+              <label for="batch-turf-select" class="form-label fw-semibold small">Turf Arena</label>
+              <select id="batch-turf-select" class="form-select" required></select>
+            </div>
+            <div class="mb-3">
+              <label for="batch-date" class="form-label fw-semibold small">Date</label>
+              <input type="date" id="batch-date" class="form-control" required>
+            </div>
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label for="batch-start-hour" class="form-label fw-semibold small">Opening Hour (24h)</label>
+                <input type="number" id="batch-start-hour" class="form-control" min="0" max="23" value="6" required>
+                <small class="text-muted" style="font-size: 0.72rem;">e.g. 6 for 06:00 AM</small>
+              </div>
+              <div class="col-6">
+                <label for="batch-end-hour" class="form-label fw-semibold small">Closing Hour (24h)</label>
+                <input type="number" id="batch-end-hour" class="form-control" min="1" max="24" value="23" required>
+                <small class="text-muted" style="font-size: 0.72rem;">e.g. 23 for 11:00 PM</small>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary-turf btn-sm">Generate All Slots</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/config.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

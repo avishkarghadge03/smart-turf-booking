@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Turf Details - Smart Turf Booking System</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <i class="bi bi-trophy-fill text-success fs-4 me-2"></i>
+        <span>Smart</span>Turf
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNavbar">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="turfs.html">Explore Turfs</a></li>
+          <li class="nav-item"><a class="nav-link" href="bookings.html">My Bookings</a></li>
+        </ul>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center" id="auth-nav-items"></ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="py-4" id="turf-detail-container">
+    <div class="container">
+      <!-- Breadcrumb -->
+      <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small">
+          <li class="breadcrumb-item"><a href="index.html" class="text-success text-decoration-none">Home</a></li>
+          <li class="breadcrumb-item"><a href="turfs.html" class="text-success text-decoration-none">Turfs</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Details</li>
+        </ol>
+      </nav>
+
+      <div class="row g-4">
+        <!-- Turf Info & Imagery -->
+        <div class="col-lg-8">
+          <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-4">
+            <img id="detail-turf-img" src="" class="w-100" style="height: 380px; object-fit: cover;" alt="Turf photo">
+            <div class="card-body p-4">
+              <div class="d-flex flex-wrap justify-content-between align-items-start mb-2">
+                <div>
+                  <h2 class="fw-bold text-dark mb-1" id="detail-turf-name">Loading...</h2>
+                  <p class="text-muted mb-2">
+                    <i class="bi bi-geo-alt-fill text-danger me-1"></i>
+                    <span id="detail-turf-location">Loading location...</span>
+                  </p>
+                </div>
+                <div class="text-end">
+                  <h3 class="fw-bold text-success mb-0" id="detail-turf-price">₹0/hr</h3>
+                  <span id="detail-turf-status" class="badge bg-success">AVAILABLE</span>
+                </div>
+              </div>
+
+              <!-- Quick specs -->
+              <div class="row g-2 p-3 bg-light rounded-3 my-3">
+                <div class="col-4 text-center border-end">
+                  <small class="text-muted d-block">Sport Category</small>
+                  <strong class="text-dark" id="detail-turf-sport">Football</strong>
+                </div>
+                <div class="col-4 text-center border-end">
+                  <small class="text-muted d-block">Max Capacity</small>
+                  <strong class="text-dark" id="detail-turf-capacity">14 Players</strong>
+                </div>
+                <div class="col-4 text-center">
+                  <small class="text-muted d-block">Rating</small>
+                  <strong class="text-warning" id="detail-avg-rating">★ 4.8</strong>
+                </div>
+              </div>
+
+              <h5 class="fw-bold text-dark mt-4">About Arena</h5>
+              <p class="text-secondary" id="detail-turf-description">Loading description...</p>
+
+              <h6 class="fw-bold text-dark mt-4">Arena Amenities</h6>
+              <div class="d-flex flex-wrap gap-2 text-muted small">
+                <span class="badge bg-white text-dark border p-2"><i class="bi bi-lightbulb text-warning me-1"></i>LED Floodlights</span>
+                <span class="badge bg-white text-dark border p-2"><i class="bi bi-water text-primary me-1"></i>Drinking Water</span>
+                <span class="badge bg-white text-dark border p-2"><i class="bi bi-p-circle text-info me-1"></i>Parking Area</span>
+                <span class="badge bg-white text-dark border p-2"><i class="bi bi-shield-check text-success me-1"></i>Changing Rooms</span>
+                <span class="badge bg-white text-dark border p-2"><i class="bi bi-camera-video text-secondary me-1"></i>CCTV Monitored</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reviews Section -->
+          <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold text-dark mb-0"><i class="bi bi-chat-left-text me-2 text-success"></i>Customer Reviews</h5>
+              <a href="reviews.html" class="btn btn-outline-turf btn-sm">Submit Review</a>
+            </div>
+            <div id="turf-reviews-list">
+              <!-- Loaded by turf.js -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Slot Picker & Booking Widget -->
+        <div class="col-lg-4" id="book">
+          <div class="card border-0 shadow-sm rounded-4 p-4 bg-white sticky-top" style="top: 85px;">
+            <h5 class="fw-bold text-dark mb-3"><i class="bi bi-calendar-check me-2 text-success"></i>Book a Slot</h5>
+
+            <!-- Date Picker -->
+            <div class="mb-3">
+              <label for="slot-date-picker" class="form-label fw-semibold small">Select Match Date</label>
+              <input type="date" id="slot-date-picker" class="form-control">
+            </div>
+
+            <!-- Slots Matrix -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold small d-flex justify-content-between">
+                <span>Available Time Slots</span>
+                <span class="small text-muted">Click slot to select</span>
+              </label>
+
+              <div id="slots-container">
+                <!-- Loaded dynamically by turf.js -->
+              </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="d-flex justify-content-around text-muted small p-2 bg-light rounded mb-3" style="font-size: 0.75rem;">
+              <div><span class="badge bg-success me-1">●</span> Available</div>
+              <div><span class="badge bg-secondary me-1">●</span> Booked</div>
+              <div><span class="badge bg-primary me-1">●</span> Selected</div>
+            </div>
+
+            <!-- Proceed to Book Button -->
+            <button id="proceed-booking-btn" class="btn btn-primary-turf w-100 py-2 fw-semibold" disabled>
+              <i class="bi bi-arrow-right-circle me-1"></i>Reserve Selected Slot
+            </button>
+            <small class="text-muted d-block text-center mt-2" style="font-size: 0.75rem;">
+              <i class="bi bi-lock me-1"></i>Slot will be temporarily held during checkout
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/turf.js"></script>
+</body>
+</html>
