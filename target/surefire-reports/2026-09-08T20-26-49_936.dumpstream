@@ -1,0 +1,5 @@
+# Created at 2026-09-08T20:26:51.885
+Boot Manifest-JAR contains absolute paths in classpath 'D:\Smart_turf_booking_System\backend\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+'other' has different root
+
